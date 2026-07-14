@@ -12,6 +12,8 @@ API REST desenvolvida com **Java 17**, **Spring Boot**, **Spring Data JPA** e **
 - Maven
 - IntelliJ IDEA
 - Postman
+- Git
+
 
 ---
 
@@ -51,6 +53,8 @@ Cada camada possui uma responsabilidade específica:
 
 - Cadastrar cliente
 - Listar todos os clientes
+- Atualizar cliente
+- Excluir cliente
 
 ---
 
@@ -98,6 +102,38 @@ Resposta:
         "idade": 21
     }
 ]
+```
+---
+
+### Atualizar Cliente
+
+**PUT** `/clientes/{id}`
+
+Exemplo:
+
+```
+PUT /clientes/1
+```
+
+#### Body
+
+```json
+{
+    "nome": "Luiz Henrique",
+    "email": "novoemail@gmail.com",
+    "idade": 22
+}
+```
+---
+
+### Excluir Cliente
+
+**DELETE** `/clientes/{id}`
+
+Exemplo:
+
+```
+DELETE /clientes/1
 ```
 
 ---
@@ -165,8 +201,23 @@ src
             ├── entity
             └── CadastroclientesApplication
 ```
+---
+## Conceitos praticados
+
+- API REST
+- Spring Boot
+- Spring Data JPA
+- Hibernate
+- PostgreSQL
+- Arquitetura em Camadas
+- Injeção de Dependência
+- CRUD
+- Mapeamento Objeto-Relacional (ORM)
+- Requisições HTTP (GET, POST, PUT e DELETE)
 
 ---
+
+
 
 ## Autor
 
