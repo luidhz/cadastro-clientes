@@ -1,5 +1,6 @@
 package com.luiz.cadastroclientes.exceptions;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +12,9 @@ import java.time.Instant;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<StandardError> resourceNotFoundHandler(ResourceNotFoundException e, HttpServletRequest request) {
-        String error = "resouce not found";
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<StandardError> EntityNotFoundExceptionHandler(EntityNotFoundException e, HttpServletRequest request) {
+        String error = "entity not found";
         HttpStatus status = HttpStatus.NOT_FOUND;
         StandardError standardError = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(standardError);

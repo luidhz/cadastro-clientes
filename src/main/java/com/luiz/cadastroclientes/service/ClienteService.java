@@ -1,37 +1,66 @@
 package com.luiz.cadastroclientes.service;
 
 import com.luiz.cadastroclientes.entity.Cliente;
+import com.luiz.cadastroclientes.exceptions.DatabaseException;
 import com.luiz.cadastroclientes.repository.ClienteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class ClienteService {
+    private final ClienteRepository clienteRepository;
 
-    @Autowired
-    private ClienteRepository repository;
+    public Cliente insert(Cliente cliente) {
+        if (clienteRepository.findByEmail(cliente.getEmail()).isPresent()) {
+            throw new DatabaseException("Já existe um cliente com esse email");
+        }
 
-    public Cliente salvar(Cliente cliente) {
-        return repository.save(cliente);
+        return clienteRepository.save(cliente);
     }
 
-    public List<Cliente> listarTodos() {
-        return repository.findAll();
+    public Cliente findById(Long id) {
+        Optional<Cliente> cliente = clienteRepository.findById(id);
+        return cliente.orElseThrow(() -> new EntityNotFoundException(
+                "entidade não encontrada com id: " + id));
     }
 
-    public void deletar(Long id) {
-        repository.deleteById(id);
+    public Cliente findByEmail(String email) {
+        return clienteRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "entidade não encontrada com email: " + email));
     }
 
-    public Cliente atualizar(Long id, Cliente cliente){
-        Cliente clienteExistente =
-                repository.findById(id).orElseThrow();
-        clienteExistente.setNome(cliente.getNome());
-        clienteExistente.setEmail(cliente.getEmail());
-        clienteExistente.setIdade(cliente.getIdade());
-        return repository.save(clienteExistente);
+    public List<Cliente> findAll() {
+        return clienteRepository.findAll();
+    }
+
+    public void updateData(Cliente entidade, Cliente cliente) {
+        entidade.setEmail(cliente.getEmail());
+        entidade.setSenha(cliente.getSenha());
+    }
+
+    public Cliente update(Long id, Cliente cliente){
+        try {
+            Cliente entidade = clienteRepository.getReferenceById(id);
+            updateData(entidade, cliente);
+            return clienteRepository.save(entidade);
+        } catch (EntityNotFoundException e) {
+            throw new EntityNotFoundException("entidade não encontrada com id: " + id);
+        }
+    }
+
+    public void delete(Long id) {
+        try {
+            clienteRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException(e.getMessage());
+        }
     }
 
 }
