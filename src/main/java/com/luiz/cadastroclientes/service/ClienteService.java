@@ -20,4 +20,18 @@ public class ClienteService {
     public List<Cliente> listarTodos() {
         return repository.findAll();
     }
+
+    public void deletar(Long id) {
+        repository.deleteById(id);
+    }
+
+    public Cliente atualizar(Long id, Cliente cliente){
+        Cliente clienteExistente =
+                repository.findById(id).orElseThrow();
+        clienteExistente.setNome(cliente.getNome());
+        clienteExistente.setEmail(cliente.getEmail());
+        clienteExistente.setIdade(cliente.getIdade());
+        return repository.save(clienteExistente);
+    }
+
 }
