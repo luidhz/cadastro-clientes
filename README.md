@@ -1,6 +1,6 @@
 # Cadastro de Clientes API
 
-API REST desenvolvida com **Java 17**, **Spring Boot**, **Spring Data JPA** e **PostgreSQL** para realizar o cadastro e a consulta de clientes.
+API REST desenvolvida com **Java 17**, **Spring Boot**, **Spring Data JPA** e **PostgreSQL** para realizar o cadastro, consulta, atualização e exclusão de clientes.
 
 ## Tecnologias Utilizadas
 
@@ -13,6 +13,7 @@ API REST desenvolvida com **Java 17**, **Spring Boot**, **Spring Data JPA** e **
 - IntelliJ IDEA
 - Postman
 - Git
+- Github
 
 
 ---
@@ -215,10 +216,4 @@ src
 - Mapeamento Objeto-Relacional (ORM)
 - Requisições HTTP (GET, POST, PUT e DELETE)
 
----
 
-
-
-## Autor
-
-**Luiz Henrique**
