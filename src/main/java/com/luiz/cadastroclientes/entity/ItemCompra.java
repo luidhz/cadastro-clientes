@@ -18,7 +18,7 @@ public class ItemCompra {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = " compra_id")
+    @JoinColumn(name = "compra_id")
     private Compra compra;
 
     @ManyToOne
