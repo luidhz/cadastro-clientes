@@ -31,7 +31,7 @@ public class ProdutoResource {
     }
 
     @GetMapping(value = "/buscar")
-    public ResponseEntity<Produto> findByCodigoDeBarras(@RequestParam String codigoDeBarras) {
+    public ResponseEntity<Produto> findByCodigoDeBarras(@RequestParam("codigo-de-barras") String codigoDeBarras) {
         return ResponseEntity.ok().body(produtoService.findByCodigoDeBarras(codigoDeBarras));
     }
 
