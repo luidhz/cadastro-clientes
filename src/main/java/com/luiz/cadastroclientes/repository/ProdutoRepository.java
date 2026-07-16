@@ -7,6 +7,4 @@ import java.util.Optional;
 
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
     Optional<Produto> findByCodigoDeBarras(String codigoDeBarras);
-
-    Long id(Long id);
 }
