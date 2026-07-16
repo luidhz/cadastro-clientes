@@ -20,7 +20,7 @@ public class Produto {
     private Long id;
 
     @Column(unique = true)
-    private String codigoBarras;
+    private String codigoDeBarras;
 
     private String nome;
     private Double preco;
