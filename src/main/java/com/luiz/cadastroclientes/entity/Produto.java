@@ -19,6 +19,9 @@ public class Produto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
+    private String codigoBarras;
+
     private String nome;
     private Double preco;
     private Integer qtdeEmEstoque;
