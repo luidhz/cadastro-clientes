@@ -1,4 +1,4 @@
-package com.luiz.cadastroclientes.entity;
+package com.luiz.cadastroclientes.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -30,5 +30,13 @@ public class Compra {
     @Getter(onMethod_ = @JsonIgnore)
     private List<ItemCompra> itens = new ArrayList<>();
 
+    @Column(name = "valor_total")
     private Double valorTotal;
+
+    public Compra(Long id, LocalDateTime dataCompra, Cliente cliente, Double valorTotal) {
+        this.id = id;
+        this.dataCompra = dataCompra;
+        this.cliente = cliente;
+        this.valorTotal = valorTotal;
+    }
 }

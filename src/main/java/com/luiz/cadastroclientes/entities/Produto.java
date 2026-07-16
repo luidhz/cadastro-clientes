@@ -1,4 +1,4 @@
-package com.luiz.cadastroclientes.entity;
+package com.luiz.cadastroclientes.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,7 +24,13 @@ public class Produto {
 
     private String nome;
     private Double preco;
+
+    @Column(name = "quatidade_em_estoque")
     private Integer qtdeEmEstoque;
+
+    @Column(name = "data_criacao")
     private LocalDateTime dataCriacao;
+
+    @Column(name = "data_ultima_atualizacao")
     private LocalDateTime dataUltimaAtualizacao;
 }

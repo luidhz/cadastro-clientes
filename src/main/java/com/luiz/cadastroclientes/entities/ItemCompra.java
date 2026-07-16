@@ -1,4 +1,4 @@
-package com.luiz.cadastroclientes.entity;
+package com.luiz.cadastroclientes.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -26,6 +26,8 @@ public class ItemCompra {
     private Produto produto;
 
     private Integer quantidade;
+
+    @Column(name = "preco_unitario")
     private Double precoUnitario;
 
 }

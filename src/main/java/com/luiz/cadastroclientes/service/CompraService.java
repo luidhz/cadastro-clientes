@@ -1,7 +1,7 @@
 package com.luiz.cadastroclientes.service;
 
-import com.luiz.cadastroclientes.entity.Compra;
-import com.luiz.cadastroclientes.entity.ItemCompra;
+import com.luiz.cadastroclientes.entities.Compra;
+import com.luiz.cadastroclientes.entities.ItemCompra;
 import com.luiz.cadastroclientes.exceptions.DatabaseException;
 import com.luiz.cadastroclientes.repository.CompraRepository;
 import jakarta.persistence.EntityNotFoundException;

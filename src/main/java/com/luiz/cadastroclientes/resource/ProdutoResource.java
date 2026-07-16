@@ -1,6 +1,6 @@
 package com.luiz.cadastroclientes.resource;
 
-import com.luiz.cadastroclientes.entity.Produto;
+import com.luiz.cadastroclientes.entities.Produto;
 import com.luiz.cadastroclientes.service.ProdutoService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,7 +30,7 @@ public class ProdutoResource {
         return ResponseEntity.ok().body(produtoService.findById(id));
     }
 
-    @GetMapping(value = "/codigo-barras")
+    @GetMapping(value = "/buscar")
     public ResponseEntity<Produto> findByCodigoDeBarras(@RequestParam String codigoDeBarras) {
         return ResponseEntity.ok().body(produtoService.findByCodigoDeBarras(codigoDeBarras));
     }

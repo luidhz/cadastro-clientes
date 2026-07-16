@@ -1,6 +1,6 @@
 package com.luiz.cadastroclientes.resource;
 
-import com.luiz.cadastroclientes.entity.Compra;
+import com.luiz.cadastroclientes.entities.Compra;
 import com.luiz.cadastroclientes.service.CompraService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

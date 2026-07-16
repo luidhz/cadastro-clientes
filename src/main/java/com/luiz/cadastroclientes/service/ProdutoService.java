@@ -1,6 +1,6 @@
 package com.luiz.cadastroclientes.service;
 
-import com.luiz.cadastroclientes.entity.Produto;
+import com.luiz.cadastroclientes.entities.Produto;
 import com.luiz.cadastroclientes.exceptions.DatabaseException;
 import com.luiz.cadastroclientes.repository.ProdutoRepository;
 import jakarta.persistence.EntityNotFoundException;

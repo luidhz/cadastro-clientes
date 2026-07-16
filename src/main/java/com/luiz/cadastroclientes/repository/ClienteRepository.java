@@ -1,6 +1,6 @@
 package com.luiz.cadastroclientes.repository;
 
-import com.luiz.cadastroclientes.entity.Cliente;
+import com.luiz.cadastroclientes.entities.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
