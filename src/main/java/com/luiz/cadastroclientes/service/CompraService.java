@@ -2,6 +2,7 @@ package com.luiz.cadastroclientes.service;
 
 import com.luiz.cadastroclientes.entities.Compra;
 import com.luiz.cadastroclientes.entities.ItemCompra;
+import com.luiz.cadastroclientes.entities.Produto;
 import com.luiz.cadastroclientes.exceptions.DatabaseException;
 import com.luiz.cadastroclientes.repository.CompraRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -17,13 +18,24 @@ import java.util.List;
 public class CompraService {
 
     private final CompraRepository compraRepository;
+    private final ProdutoService produtoService;
 
     public Compra insert(Compra compra) {
         compra.setDataCompra(LocalDateTime.now());
 
+        double valorTotal = 0.0;
+
         for (ItemCompra item : compra.getItens()) {
             item.setCompra(compra);
+
+            Produto produto = produtoService.findById(item.getProduto().getId());
+            item.setProduto(produto);
+            item.setPrecoUnitario(produto.getPreco());
+
+            valorTotal += produto.getPreco() * item.getQuantidade();
         }
+
+        compra.setValorTotal(valorTotal);
 
         return compraRepository.save(compra);
     }
@@ -57,15 +69,27 @@ public class CompraService {
 
     private void updateData(Compra entidade, Compra compra) {
         entidade.setCliente(compra.getCliente());
-        entidade.setValorTotal(compra.getValorTotal());
 
         if (compra.getItens() != null) {
             entidade.getItens().clear();
 
+            double valorTotal = 0.0;
+
             for (ItemCompra item : compra.getItens()) {
                 item.setCompra(entidade);
+
+                Produto produto = produtoService.findById(item.getProduto().getId());
+                item.setProduto(produto);
+                item.setPrecoUnitario(produto.getPreco());
+
+                valorTotal += produto.getPreco() * item.getQuantidade();
+
                 entidade.getItens().add(item);
             }
+
+            entidade.setValorTotal(valorTotal);
+        } else {
+            entidade.setValorTotal(compra.getValorTotal());
         }
     }
 }
