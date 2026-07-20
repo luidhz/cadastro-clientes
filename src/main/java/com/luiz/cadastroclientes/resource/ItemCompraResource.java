@@ -26,19 +26,19 @@ public class ItemCompraResource {
         return ResponseEntity.ok(itemCompraService.findAll());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ItemCompra> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(itemCompraService.findById(id));
+    @GetMapping("/{compraId}/{produtoId}")
+    public ResponseEntity<ItemCompra> findById(@PathVariable Long compraId, @PathVariable Long produtoId) {
+        return ResponseEntity.ok(itemCompraService.findById(compraId, produtoId));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ItemCompra> update(@PathVariable Long id, @RequestBody ItemCompra itemCompra) {
-        return ResponseEntity.ok(itemCompraService.update(id, itemCompra));
+    @PutMapping("/{compraId}/{produtoId}")
+    public ResponseEntity<ItemCompra> update(@PathVariable Long compraId, @PathVariable Long produtoId, @RequestBody ItemCompra itemCompra) {
+        return ResponseEntity.ok(itemCompraService.update(compraId, produtoId, itemCompra));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        itemCompraService.delete(id);
+    @DeleteMapping("/{compraId}/{produtoId}")
+    public ResponseEntity<Void> delete(@PathVariable Long compraId, @PathVariable Long produtoId) {
+        itemCompraService.delete(compraId, produtoId);
         return ResponseEntity.noContent().build();
     }
 }

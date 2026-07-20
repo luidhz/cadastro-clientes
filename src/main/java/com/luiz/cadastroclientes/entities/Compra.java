@@ -26,8 +26,8 @@ public class Compra {
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    @OneToMany(mappedBy = "compra", cascade = CascadeType.ALL)
     @Getter(onMethod_ = @JsonIgnore)
+    @OneToMany(mappedBy = "id.compra", cascade = CascadeType.ALL)
     private List<ItemCompra> itens = new ArrayList<>();
 
     @Column(name = "valor_total")
@@ -38,5 +38,16 @@ public class Compra {
         this.dataCompra = dataCompra;
         this.cliente = cliente;
         this.valorTotal = valorTotal;
+    }
+
+    public Double getValorTotal() {
+        double soma = 0.0;
+
+        if (itens != null) {
+            for (ItemCompra item : itens) {
+                soma += item.getSubTotal();
+            }
+        }
+        return soma;
     }
 }
