@@ -1,6 +1,7 @@
 package com.luiz.cadastroclientes.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.luiz.cadastroclientes.enums.UsuarioRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,15 +27,19 @@ public class Usuario {
 
     private String senha;
 
-    @OneToMany(mappedBy = "cliente")
+    @Enumerated(EnumType.STRING)
+    private UsuarioRole role;
+
+    @OneToMany(mappedBy = "usuario")
     @Getter(onMethod_ = @JsonIgnore)
     private List<Compra> compras = new ArrayList<>();
 
-    public Usuario(Long id, String nome, Integer idade, String email, String senha) {
+    public Usuario(Long id, String nome, Integer idade, String email, String senha, UsuarioRole role) {
         this.id = id;
         this.nome = nome;
         this.idade = idade;
         this.email = email;
         this.senha = senha;
+        this.role = role;
     }
 }
