@@ -68,7 +68,7 @@ public class CompraService {
     }
 
     private void updateData(Compra entidade, Compra compra) {
-        entidade.setCliente(compra.getCliente());
+        entidade.setUsuario(compra.getUsuario());
 
         if (compra.getItens() != null) {
             entidade.getItens().clear();

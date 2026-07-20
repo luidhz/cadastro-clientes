@@ -24,7 +24,7 @@ public class Compra {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
-    private Cliente cliente;
+    private Usuario usuario;
 
     @OneToMany(mappedBy = "compra", cascade = CascadeType.ALL)
     @Getter(onMethod_ = @JsonIgnore)
@@ -33,10 +33,10 @@ public class Compra {
     @Column(name = "valor_total")
     private Double valorTotal;
 
-    public Compra(Long id, LocalDateTime dataCompra, Cliente cliente, Double valorTotal) {
+    public Compra(Long id, LocalDateTime dataCompra, Usuario usuario, Double valorTotal) {
         this.id = id;
         this.dataCompra = dataCompra;
-        this.cliente = cliente;
+        this.usuario = usuario;
         this.valorTotal = valorTotal;
     }
 }

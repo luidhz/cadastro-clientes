@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "clientes")
+@Table(name = "usuarios")
 @NoArgsConstructor
 @Getter
 @Setter
-public class Cliente {
+public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,7 +30,7 @@ public class Cliente {
     @Getter(onMethod_ = @JsonIgnore)
     private List<Compra> compras = new ArrayList<>();
 
-    public Cliente(Long id, String nome, Integer idade, String email, String senha) {
+    public Usuario(Long id, String nome, Integer idade, String email, String senha) {
         this.id = id;
         this.nome = nome;
         this.idade = idade;
