@@ -1,5 +1,6 @@
 package com.luiz.cadastroclientes.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.luiz.cadastroclientes.entities.pk.ItemCompraPk;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
