@@ -41,6 +41,8 @@ public class ClienteService {
     }
 
     public void updateData(Cliente entidade, Cliente cliente) {
+        entidade.setNome(cliente.getNome());
+        entidade.setIdade(cliente.getIdade());
         entidade.setEmail(cliente.getEmail());
         entidade.setSenha(cliente.getSenha());
     }

@@ -44,6 +44,8 @@ public class ProdutoService {
     }
 
     public void updateData(Produto entidade, Produto produto) {
+        entidade.setCodigoDeBarras(produto.getCodigoDeBarras());
+        entidade.setNome(produto.getNome());
         entidade.setPreco(produto.getPreco());
         entidade.setQtdeEmEstoque(produto.getQtdeEmEstoque());
         entidade.setDataUltimaAtualizacao(LocalDateTime.now());
