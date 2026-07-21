@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/clientes")
+@RequestMapping("/usuarios")
 @AllArgsConstructor
-public class ClienteResource {
+public class UsuarioResource {
     private final UsuarioService usuarioService;
 
     @PostMapping
