@@ -6,6 +6,7 @@ import com.luiz.cadastroclientes.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,12 +16,14 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public Usuario insert(Usuario usuario) {
         if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent()) {
             throw new DatabaseException("Já existe um usuario com esse email");
         }
 
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         return usuarioRepository.save(usuario);
     }
 
@@ -44,7 +47,10 @@ public class UsuarioService {
         entidade.setNome(usuario.getNome());
         entidade.setIdade(usuario.getIdade());
         entidade.setEmail(usuario.getEmail());
-        entidade.setSenha(usuario.getSenha());
+
+        if (usuario.getSenha() != null && !usuario.getSenha().isBlank()) {
+            entidade.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        }
     }
 
     public Usuario update(Long id, Usuario usuario){
