@@ -21,11 +21,11 @@ import java.util.List;
 public class CompraResource {
 
     private final CompraService compraService;
-    private final DefaultAuthenticationEventPublisher authenticationEventPublisher;
 
     @PostMapping
-    public ResponseEntity<Compra> insert(@RequestBody Compra compra) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(compraService.insert(compra));
+    public ResponseEntity<CompraResponseDTO> insert(@RequestBody Compra compra) {
+        Compra compraSalva = compraService.insert(compra);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new CompraResponseDTO(compraSalva));
     }
 
     @GetMapping
