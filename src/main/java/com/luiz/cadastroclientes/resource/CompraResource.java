@@ -1,12 +1,18 @@
 package com.luiz.cadastroclientes.resource;
 
+import com.luiz.cadastroclientes.dto.response.CompraResponseDTO;
 import com.luiz.cadastroclientes.entities.Compra;
+import com.luiz.cadastroclientes.entities.Usuario;
+import com.luiz.cadastroclientes.enums.UsuarioRole;
 import com.luiz.cadastroclientes.service.CompraService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.DefaultAuthenticationEventPublisher;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
@@ -17,18 +23,34 @@ public class CompraResource {
     private final CompraService compraService;
 
     @PostMapping
-    public ResponseEntity<Compra> insert(@RequestBody Compra compra) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(compraService.insert(compra));
+    public ResponseEntity<CompraResponseDTO> insert(@RequestBody Compra compra) {
+        Compra compraSalva = compraService.insert(compra);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new CompraResponseDTO(compraSalva));
     }
 
     @GetMapping
-    public ResponseEntity<List<Compra>> findAll() {
-        return ResponseEntity.ok(compraService.findAll());
+    public ResponseEntity<List<CompraResponseDTO>> findAll(Authentication authentication) {
+        Usuario logado = (Usuario) authentication.getPrincipal();
+
+        if (logado.getRole() == UsuarioRole.ADMIN) {
+            return ResponseEntity.ok(compraService.findAllDTO());
+        }
+
+        return ResponseEntity.ok(compraService.findByUsuarioDTO(logado.getId()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Compra> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(compraService.findById(id));
+    public ResponseEntity<CompraResponseDTO> findById(@PathVariable Long id, Authentication authentication) throws AccessDeniedException {
+        Usuario logado = (Usuario) authentication.getPrincipal();
+        CompraResponseDTO compra = compraService.findByIdDTO(id);
+
+        boolean donoDaCompra = compra.usuario().id().equals(logado.getId());
+
+        if (logado.getRole() != UsuarioRole.ADMIN && !donoDaCompra) {
+            throw new AccessDeniedException("Você não tem permição para ver esta compra");
+        }
+
+        return ResponseEntity.ok(compra);
     }
 
     @PutMapping("/{id}")

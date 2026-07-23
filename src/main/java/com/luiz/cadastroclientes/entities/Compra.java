@@ -26,7 +26,6 @@ public class Compra {
     @JoinColumn(name = "cliente_id")
     private Usuario usuario;
 
-    @Getter(onMethod_ = @JsonIgnore)
     @OneToMany(mappedBy = "id.compra", cascade = CascadeType.ALL)
     private List<ItemCompra> itens = new ArrayList<>();
 
