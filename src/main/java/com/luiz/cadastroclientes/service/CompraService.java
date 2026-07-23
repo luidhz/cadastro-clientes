@@ -1,5 +1,6 @@
 package com.luiz.cadastroclientes.service;
 
+import com.luiz.cadastroclientes.dto.response.CompraResponseDTO;
 import com.luiz.cadastroclientes.entities.Compra;
 import com.luiz.cadastroclientes.entities.ItemCompra;
 import com.luiz.cadastroclientes.entities.Produto;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -44,9 +46,25 @@ public class CompraService {
         return compraRepository.findAll();
     }
 
+    public List<CompraResponseDTO> findAllDTO() {
+        return compraRepository.findAll().stream()
+                .map(CompraResponseDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<CompraResponseDTO> findByUsuarioDTO(Long usuarioId) {
+        return compraRepository.findByUsuarioId(usuarioId).stream()
+                .map(CompraResponseDTO::new)
+                .collect(Collectors.toList());
+    }
+
     public Compra findById(Long id) {
         return compraRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Compra nao encontrada com id: " + id));
+    }
+
+    public CompraResponseDTO findByIdDTO(Long id) {
+        return new CompraResponseDTO(findById(id));
     }
 
     public Compra update(Long id, Compra compra) {
