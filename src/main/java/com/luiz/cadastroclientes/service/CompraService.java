@@ -6,6 +6,7 @@ import com.luiz.cadastroclientes.entities.ItemCompra;
 import com.luiz.cadastroclientes.entities.Produto;
 import com.luiz.cadastroclientes.entities.Usuario;
 import com.luiz.cadastroclientes.exceptions.DatabaseException;
+import com.luiz.cadastroclientes.exceptions.EstoqueInsuficienteException;
 import com.luiz.cadastroclientes.repository.CompraRepository;
 import com.luiz.cadastroclientes.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -38,6 +39,15 @@ public class CompraService {
             item.setCompra(compra);
 
             Produto produto = produtoService.findById(item.getProduto().getId());
+
+            if (produto.getQtdeEmEstoque() < item.getQuantidade()) {
+                throw new EstoqueInsuficienteException(
+                        "Estoque insuficiente para o produto: " + produto.getNome());
+            }
+
+            produto.setQtdeEmEstoque(produto.getQtdeEmEstoque() - item.getQuantidade());
+            produtoService.update(produto.getId(), produto);
+
             item.setProduto(produto);
             item.setPrecoUnitario(produto.getPreco());
 

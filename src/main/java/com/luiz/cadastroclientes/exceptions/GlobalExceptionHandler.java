@@ -50,4 +50,12 @@ public class GlobalExceptionHandler {
         StandardError standardError = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(standardError);
     }
+
+    @ExceptionHandler(EstoqueInsuficienteException.class)
+    public ResponseEntity<StandardError> estoqueInsuficienteHandler(DatabaseException e, HttpServletRequest request) {
+        String error = "erro no estoque";
+        HttpStatus status = HttpStatus.CONFLICT;
+        StandardError standardError = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(standardError);
+    }
 }
