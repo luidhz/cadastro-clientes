@@ -28,6 +28,7 @@ public class AuthResource {
         String token = jwtService.generateToken(usuario);
 
         return ResponseEntity.ok(new LoginResponseDTO(
+                usuario.getId(),
                 token,
                 usuario.getNome(),
                 usuario.getEmail(),

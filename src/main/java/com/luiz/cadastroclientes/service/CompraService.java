@@ -4,8 +4,10 @@ import com.luiz.cadastroclientes.dto.response.CompraResponseDTO;
 import com.luiz.cadastroclientes.entities.Compra;
 import com.luiz.cadastroclientes.entities.ItemCompra;
 import com.luiz.cadastroclientes.entities.Produto;
+import com.luiz.cadastroclientes.entities.Usuario;
 import com.luiz.cadastroclientes.exceptions.DatabaseException;
 import com.luiz.cadastroclientes.repository.CompraRepository;
+import com.luiz.cadastroclientes.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,9 +24,13 @@ public class CompraService {
 
     private final CompraRepository compraRepository;
     private final ProdutoService produtoService;
+    private final UsuarioRepository usuarioRepository;
 
     public Compra insert(Compra compra) {
         compra.setDataCompra(LocalDateTime.now());
+
+        Optional<Usuario> usuario = usuarioRepository.findById(compra.getUsuario().getId());
+        compra.setUsuario(usuario.get());
 
         double valorTotal = 0.0;
 
