@@ -25,6 +25,7 @@ public class CompraService {
 
     private final CompraRepository compraRepository;
     private final ProdutoService produtoService;
+    private final NotificacaoService notificacaoService;
     private final UsuarioRepository usuarioRepository;
 
     public Compra insert(Compra compra) {
@@ -56,7 +57,9 @@ public class CompraService {
 
         compra.setValorTotal(valorTotal);
 
-        return compraRepository.save(compra);
+        Compra salva = compraRepository.save(compra);
+        notificacaoService.notificarCompra(new CompraResponseDTO(salva));
+        return salva;
     }
 
     public List<Compra> findAll() {
