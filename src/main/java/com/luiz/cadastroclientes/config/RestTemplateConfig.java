@@ -2,11 +2,12 @@ package com.luiz.cadastroclientes.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class RestTemplateConfig {
     @Bean
-    public RestTemplateConfig restTemplateConfig() {
-        return new RestTemplateConfig();
+    public RestTemplate restTemplateConfig() {
+        return new RestTemplate();
     }
 }
