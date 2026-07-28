@@ -1,8 +1,6 @@
 package com.luiz.cadastroclientes.service;
 
 import com.luiz.cadastroclientes.dto.response.CompraResponseDTO;
-import lombok.RequiredArgsConstructor;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -10,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-@RequiredArgsConstructor
 public class NotificacaoService {
     private RestTemplate restTemplate;
 
