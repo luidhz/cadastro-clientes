@@ -37,7 +37,7 @@ class UsuarioServiceTest {
 
     @BeforeEach
     void setUp() {
-        usuario = new Usuario(1l, "Brenno", 0, "teste@gmail.com", "senha123", UsuarioRole.ADMIN);
+        usuario = new Usuario(1L, "Brenno", 0, "teste@gmail.com", "senha123", UsuarioRole.ADMIN);
     }
 
     @Test
