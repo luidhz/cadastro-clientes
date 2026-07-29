@@ -88,7 +88,7 @@ class UsuarioServiceTest {
     @DisplayName("update deve atualizar os dados e recriptografar a senha quando informada")
     void updateDeveAtualizarDadosERecriptografarSenha() {
         Usuario entidade = new Usuario(1L, "Antigo", 20, "antigo@email.com", "senhaAntiga", UsuarioRole.USUARIO);
-        Usuario dadosNovos = new Usuario(null, "Novo Nome", 25, "novo@email.com", "novaSenha", null);
+        Usuario dadosNovos = new Usuario(null, "Novo Nome", 25, "novo@email.com", "novaSenha", UsuarioRole.USUARIO);
 
         when(usuarioRepository.getReferenceById(1L)).thenReturn(entidade);
         when(passwordEncoder.encode("novaSenha")).thenReturn("novaSenhaCriptografada");
