@@ -18,8 +18,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -49,9 +48,8 @@ class UsuarioServiceTest {
         Usuario salvo = usuarioService.insert(usuario);
 
         assertEquals("senhaCriptografada", salvo.getSenha());
-        verify(passwordEncoder).encode("senha123");
-        verify(usuarioRepository).save(usuario);
-
+        verify(passwordEncoder, times(1)).encode("senha123");
+        verify(usuarioRepository, times(1)).save(usuario);
     }
 
     @Test
@@ -100,7 +98,7 @@ class UsuarioServiceTest {
         assertEquals(25, resultado.getIdade());
         assertEquals("novo@email.com", resultado.getEmail());
         assertEquals("novaSenhaCriptografada", resultado.getSenha());
-        verify(usuarioRepository).save(entidade);
+        verify(usuarioRepository, times(1)).save(entidade);
     }
 
     @Test
@@ -108,6 +106,6 @@ class UsuarioServiceTest {
     void deleteDeveRemoverUsuario() {
         usuarioService.delete(1L);
 
-        verify(usuarioRepository).deleteById(1L);
+        verify(usuarioRepository, times(1)).deleteById(1L);
     }
 }
