@@ -85,6 +85,25 @@ class UsuarioServiceTest {
     }
 
     @Test
+    @DisplayName("update deve atualizar os dados e recriptografar a senha quando informada")
+    void updateDeveAtualizarDadosERecriptografarSenha() {
+        Usuario entidade = new Usuario(1L, "Antigo", 20, "antigo@email.com", "senhaAntiga", UsuarioRole.USUARIO);
+        Usuario dadosNovos = new Usuario(null, "Novo Nome", 25, "novo@email.com", "novaSenha", null);
+
+        when(usuarioRepository.getReferenceById(1L)).thenReturn(entidade);
+        when(passwordEncoder.encode("novaSenha")).thenReturn("novaSenhaCriptografada");
+        when(usuarioRepository.save(entidade)).thenReturn(entidade);
+
+        Usuario resultado = usuarioService.update(1L, dadosNovos);
+
+        assertEquals("Novo Nome", resultado.getNome());
+        assertEquals(25, resultado.getIdade());
+        assertEquals("novo@email.com", resultado.getEmail());
+        assertEquals("novaSenhaCriptografada", resultado.getSenha());
+        verify(usuarioRepository).save(entidade);
+    }
+
+    @Test
     @DisplayName("delete deve remover o usuario quando o id existir")
     void deleteDeveRemoverUsuario() {
         usuarioService.delete(1L);
