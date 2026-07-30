@@ -2,8 +2,10 @@ package com.luiz.cadastroclientes;
 
 import com.luiz.cadastroclientes.entities.Usuario;
 import com.luiz.cadastroclientes.enums.UsuarioRole;
+import com.luiz.cadastroclientes.exceptions.DatabaseException;
 import com.luiz.cadastroclientes.repository.UsuarioRepository;
 import com.luiz.cadastroclientes.service.UsuarioService;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
@@ -18,6 +21,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 
@@ -53,6 +57,17 @@ class UsuarioServiceTest {
     }
 
     @Test
+    @DisplayName("insert deve lancar DatabaseException quando o email ja existir")
+    void insertDeveLancarExcecaoQuandoEmailJaExiste() {
+        when(usuarioRepository.findByEmail(usuario.getEmail())).thenReturn(Optional.of(usuario));
+
+        assertThrows(DatabaseException.class, () -> usuarioService.insert(usuario));
+
+        verify(usuarioRepository, never()).save(any());
+        verify(passwordEncoder, never()).encode(anyString());
+    }
+
+    @Test
     @DisplayName("findById deve retornar o usuario quando existir")
     void findByIdDeveRetornarUsuarioQuandoExistir() {
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
@@ -63,6 +78,14 @@ class UsuarioServiceTest {
     }
 
     @Test
+    @DisplayName("findById deve lancar EntityNotFoundException quando nao existir")
+    void findByIdDeveLancarExcecaoQuandoNaoExistir() {
+        when(usuarioRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> usuarioService.findById(99L));
+    }
+
+    @Test
     @DisplayName("findByEmail deve retornar o usuario quando existir")
     void findByEmailDeveRetornarUsuarioQuandoExistir() {
         when(usuarioRepository.findByEmail("joao@email.com")).thenReturn(Optional.of(usuario));
@@ -70,6 +93,14 @@ class UsuarioServiceTest {
         Usuario encontrado = usuarioService.findByEmail("joao@email.com");
 
         assertEquals(usuario, encontrado);
+    }
+
+    @Test
+    @DisplayName("findByEmail deve lancar EntityNotFoundException quando nao existir")
+    void findByEmailDeveLancarExcecaoQuandoNaoExistir() {
+        when(usuarioRepository.findByEmail("naoexiste@email.com")).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> usuarioService.findByEmail("naoexiste@email.com"));
     }
 
     @Test
@@ -102,10 +133,30 @@ class UsuarioServiceTest {
     }
 
     @Test
+    @DisplayName("update deve lancar EntityNotFoundException quando o usuario nao existir")
+    void updateDeveLancarExcecaoQuandoUsuarioNaoExistir() {
+        when(usuarioRepository.getReferenceById(99L))
+                .thenThrow(new EntityNotFoundException("nao encontrado"));
+
+        assertThrows(EntityNotFoundException.class, () -> usuarioService.update(99L, usuario));
+
+        verify(usuarioRepository, never()).save(any());
+    }
+
+    @Test
     @DisplayName("delete deve remover o usuario quando o id existir")
     void deleteDeveRemoverUsuario() {
         usuarioService.delete(1L);
 
         verify(usuarioRepository, times(1)).deleteById(1L);
+    }
+
+    @Test
+    @DisplayName("delete deve lancar DatabaseException quando houver violacao de integridade")
+    void deleteDeveLancarDatabaseExceptionQuandoHouverViolacaoDeIntegridade() {
+        doThrow(new DataIntegrityViolationException("violacao"))
+                .when(usuarioRepository).deleteById(1L);
+
+        assertThrows(DatabaseException.class, () -> usuarioService.delete(1L));
     }
 }
